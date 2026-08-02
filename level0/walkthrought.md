@@ -13,3 +13,5 @@ cmd> file level0 -> level0: setuid ELF 32-bit LSB executable,
 Le but est d'acceder a .pass du levelX (niveau suivant)
 le programme fait un atoi sur le premier arguments, si le premier argument
 est egale a 423, il me transforme en user level1.
+Je peux donc acceder au .pass du user level1, le mot de passe etant:
+1fe8a524fa4bec01ca4ea2a869af2a02260d4a7d5fe7e7c24d8617e6dca12d3a
