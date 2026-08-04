@@ -1,4 +1,11 @@
 #include <stdio.h>
+
+void run(void){
+fwrite("Good... Wait what?\n", 1, 19, stdout);
+  system("/bin/sh");
+  return;
+}
+
 int main(void){
 	char buffer[76];
 	gets(buffer);
