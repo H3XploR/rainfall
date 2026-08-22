@@ -1,4 +1,9 @@
 /*
+ *
+ *				DANS CETTE ARCHITECTURE ESP EST UTILISE POUR GERER LES ARGUMENTS
+ *						LORS DES APPELS DE FONCTIONS
+ *
+ *
  * 0x080484d4 <+0>:	push   ebp
    0x080484d5 <+1>:	mov    ebp,esp 				(changement de stack)
    0x080484d7 <+3>:	sub    esp,0x68 			(espace de 104 octects)
@@ -19,6 +24,46 @@
 
  					*0xbffff71c = *0x804854a = <main+11>: =	(0xc9 = instruction leave)
 
-   0x080484f8 <+36>:	mov    eax,DWORD PTR [ebp-0xc]
+   0x080484f8 <+36>:	mov    eax,DWORD PTR [ebp-0xc] 		$eax contient le pointeur 0x804854a <main+11>:	0xc9
+
+   0x080484fb <+39>:	and    eax,0xb0000000             
+
+   0x08048500 <+44>:	cmp    eax,0xb0000000
+
+   0x08048505 <+49>:	jne    0x8048527 <p+83>			si $eax est different de 0xb0000000 il jump a p+83
+
+
+   0x08048507 <+51>:	mov    eax,0x8048620			$eax = 0x8048620:	0x28
+
+   0x0804850c <+56>:	mov    edx,DWORD PTR [ebp-0xc]		$edx = 0x804854a <main+11>:	0xc9
+
+
+   0x0804850f <+59>:	mov    DWORD PTR [esp+0x4],edx		[$esp+0x4] = 0x804854a <main+11>:	0xc9
+
+   0x08048513 <+63>:	mov    DWORD PTR [esp],eax		$esp = 0x8048620: "(%p)\n"
+
+   0x08048516 <+66>:	call   0x80483a0 <printf@plt>		printf("(%p)\n", 0x804854a); --> affiche le pointeur sur <main+11> 
+
+   0x0804851b <+71>:	mov    DWORD PTR [esp],0x1
+   0x08048522 <+78>:	call   0x80483d0 <_exit@plt>		exit(1);
+
+   0x08048527 <+83>:	lea    eax,[ebp-0x4c]			$eax = 0xbffff6dc:	 "ABCDEFGHIJKLMMMMNOPQRSTUVWXYZ"
+   								$ebp-0x4c = 0xbffff6dc:	 "ABCDEFGHIJKLMMMMNOPQRSTUVWXYZ"
+
+   0x0804852a <+86>:	mov    DWORD PTR [esp],eax		$esp = 0xbffff6dc:	 "ABCDEFGHIJKLMMMMNOPQRSTUVWXYZ"
+
+   0x0804852d <+89>:	call   0x80483f0 <puts@plt>		affiche 0xbffff6dc:	 "ABCDEFGHIJKLMMMMNOPQRSTUVWXYZ"
+
+   0x08048532 <+94>:	lea    eax,[ebp-0x4c]			$eax = 0xbffff6dc:	 "ABCDEFGHIJKLMMMMNOPQRSTUVWXYZ"
+
+
+   0x08048535 <+97>:	mov    DWORD PTR [esp],eax		pointeur contenue dand $esp = $eax = 0xbffff6dc:	 "ABCDEFGHIJKLMMMMNOPQRSTUVWXYZ"
+
+
+   0x08048538 <+100>:	call   0x80483e0 <strdup@plt>		duplique  0xbffff6dc:	 "ABCDEFGHIJKLMMMMNOPQRSTUVWXYZ"
+   0x0804853d <+105>:	leave  
+   0x0804853e <+106>:	ret
+
+*/
 
 
