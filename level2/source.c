@@ -2,7 +2,11 @@
  *
  *				DANS CETTE ARCHITECTURE ESP EST UTILISE POUR GERER LES ARGUMENTS
  *						LORS DES APPELS DE FONCTIONS
+ *					
  *
+ *
+ *				echo "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" | ./level2
+ *						creer tout pile le segfault
  *
  * 0x080484d4 <+0>:	push   ebp
    0x080484d5 <+1>:	mov    ebp,esp 				(changement de stack)
@@ -63,6 +67,13 @@
    0x08048538 <+100>:	call   0x80483e0 <strdup@plt>		duplique  0xbffff6dc:	 "ABCDEFGHIJKLMMMMNOPQRSTUVWXYZ"
    0x0804853d <+105>:	leave  
    0x0804853e <+106>:	ret
+
+
+
+	00000000000000000000000000000000000000000000000000000000000000000000000000000
+					^			^
+					|			|
+				     ret main()		     ret p()
 
 */
 
